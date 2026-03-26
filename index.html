@@ -4,16 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>mourntheloss // interface</title>
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg: #080808;
-            --surface: #0f0f0f;
-            --accent: #38bdf8; /* Sharp Sky Blue */
-            --accent-dim: #0ea5e9;
+            --bg: #000000;
+            --accent: #38bdf8;
             --text: #ffffff;
-            --text-dim: #71717a;
-            --border-glow: 0 0 15px rgba(56, 189, 248, 0.3);
+            --border: #ffffff;
         }
 
         * { 
@@ -25,49 +22,46 @@
 
         body {
             background-color: var(--bg);
-            background-image: 
-                linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
-            background-size: 40px 40px; /* Static Blueprint Grid */
             color: var(--text);
-            line-height: 1.6;
+            line-height: 1.4;
             min-height: 100vh;
+            padding: 20px;
         }
 
-        .container {
-            max-width: 900px;
-            margin: 0 auto;
-            padding: 100px 20px;
-        }
-
-        /* Fixed Navigation Header */
+        /* Navigation - Solid & Sharp */
         nav {
             position: fixed;
             top: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: var(--surface);
-            border: 2px solid var(--accent);
-            box-shadow: var(--border-glow);
-            padding: 10px 20px;
-            z-index: 1000;
+            left: 20px;
+            right: 20px;
+            background: var(--bg);
+            border: 4px solid var(--border);
             display: flex;
-            gap: 15px;
-            clip-path: polygon(10% 0, 100% 0, 90% 100%, 0 100%); /* Angled edges */
+            z-index: 1000;
         }
 
         nav a {
-            color: var(--text-dim);
+            flex: 1;
+            color: var(--text);
             text-decoration: none;
-            font-size: 0.85rem;
-            font-weight: 700;
+            font-size: 0.8rem;
+            font-weight: 800;
             cursor: pointer;
-            padding: 5px 10px;
+            padding: 15px;
+            text-align: center;
+            border-right: 4px solid var(--border);
         }
 
+        nav a:last-child { border-right: none; }
+
         nav a.active {
-            color: var(--accent);
-            background: rgba(56, 189, 248, 0.1);
+            background: var(--accent);
+            color: #000;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 100px auto 0;
         }
 
         header {
@@ -78,107 +72,75 @@
         }
 
         .profile-img {
-            width: 100px;
-            height: 100px;
-            border: 3px solid var(--accent);
-            box-shadow: var(--border-glow);
+            width: 120px;
+            height: 120px;
+            border: 4px solid var(--border);
             object-fit: cover;
         }
 
-        h1 { 
-            font-size: 3.5rem; 
-            line-height: 1;
-            text-shadow: 3px 3px 0px var(--accent-dim);
-        }
+        h1 { font-size: 4.5rem; line-height: 0.9; font-weight: 800; letter-spacing: -3px; }
 
-        /* The Grid System */
-        .grid { 
-            display: grid; 
-            grid-template-columns: repeat(4, 1fr); 
-            gap: 20px; 
-        }
-
-        .card {
-            background: var(--surface);
-            border: 1px solid #27272a;
-            padding: 25px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        /* Corner Accent for Cards */
-        .card::before {
-            content: "";
-            position: absolute;
-            top: 0; right: 0;
-            border-style: solid;
-            border-width: 0 15px 15px 0;
-            border-color: transparent var(--accent) transparent transparent;
-        }
-
-        .card:hover {
-            border-color: var(--accent);
-            box-shadow: var(--border-glow);
-        }
-
+        /* The Layout */
+        .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
         .span-2 { grid-column: span 2; }
         .span-4 { grid-column: span 4; }
 
+        .card {
+            background: var(--bg);
+            border: 4px solid var(--border);
+            padding: 25px;
+            position: relative;
+        }
+
         .tag {
-            color: var(--accent);
-            font-size: 0.75rem;
-            font-weight: bold;
-            margin-bottom: 10px;
-            display: block;
-            letter-spacing: 2px;
+            background: var(--border);
+            color: var(--bg);
+            font-size: 0.7rem;
+            font-weight: 800;
+            padding: 2px 8px;
+            margin-bottom: 15px;
+            display: inline-block;
         }
 
         .tech-pill {
             display: inline-block;
-            background: #18181b;
-            border-left: 3px solid var(--accent);
+            border: 2px solid var(--accent);
             padding: 4px 10px;
             font-size: 0.7rem;
             margin: 5px 5px 0 0;
+            font-weight: 800;
         }
-
-        .project-card { text-decoration: none; color: inherit; transition: 0.1s; }
 
         .page-section { display: none; }
         .active-page { display: block; }
 
-        /* Buttons with a 'Hard' Flash */
         .btn {
-            background: transparent;
-            border: 2px solid var(--accent);
-            color: var(--accent);
-            padding: 12px 24px;
-            font-weight: bold;
+            background: var(--accent);
+            border: none;
+            color: #000;
+            padding: 15px 25px;
+            font-weight: 800;
             cursor: pointer;
             margin-top: 20px;
-            text-align: center;
             display: inline-block;
-            transition: 0.2s;
         }
 
-        .btn:hover {
-            background: var(--accent);
-            color: var(--bg);
-            box-shadow: var(--border-glow);
-        }
+        .btn:hover { filter: brightness(1.2); }
 
-        #addon-commit-msg { color: var(--accent); font-weight: bold; border-top: 1px solid #27272a; padding-top: 10px; margin-top: 10px; }
+        #addon-commit-msg { color: var(--accent); font-weight: 800; margin-top: 10px; font-size: 1.2rem; }
 
         @media (max-width: 768px) {
             .grid { grid-template-columns: 1fr; }
             .span-2, .span-4 { grid-column: span 1; }
-            h1 { font-size: 2.2rem; }
+            h1 { font-size: 2.5rem; }
+            nav { flex-wrap: wrap; }
+            nav a { border-bottom: 2px solid var(--border); border-right: none; }
         }
     </style>
 </head>
 <body>
 
-<nav>
+<nav id="navbar">
     <a data-target="home" class="active">HOME</a>
     <a data-target="projects">PROJECTS</a>
     <a data-target="addon">ADDON</a>
@@ -193,17 +155,17 @@
             <img src="https://github.com/mourntheloss.png" alt="mourntheloss" class="profile-img">
             <div>
                 <h1>mourntheloss</h1>
-                <p style="color: var(--accent);">> low level developers have so much ego</p>
+                <p style="color: var(--accent); font-weight: 800; font-size: 1.2rem;">> low level developers have so much ego</p>
             </div>
         </header>
 
         <div class="grid">
             <div class="card span-2">
-                <span class="tag">// TASK_PRIORITY</span>
-                <p style="font-size: 1.1rem;">meteor addon, i dont like bytecode</p>
+                <span class="tag">TASK_PRIORITY</span>
+                <p style="font-size: 1.3rem; font-weight: 500;">meteor addon, i dont like bytecode</p>
             </div>
             <div class="card span-2">
-                <span class="tag">// TECH_STACK</span>
+                <span class="tag">TECH_STACK</span>
                 <div>
                     <span class="tech-pill">C++20</span>
                     <span class="tech-pill">ASM_x64</span>
@@ -215,48 +177,48 @@
     </section>
 
     <section id="projects" class="page-section">
-        <h2 style="margin-bottom: 30px; border-left: 5px solid var(--accent); padding-left: 15px;">repositories</h2>
+        <h1 style="margin-bottom: 30px;">repositories</h1>
         <div class="grid">
-            <a href="https://github.com/mourntheloss/addon" target="_blank" class="card span-2 project-card">
+            <a href="https://github.com/mourntheloss/addon" target="_blank" style="text-decoration:none; color:inherit;" class="card span-2">
                 <span class="tag">github</span>
-                <h3>ADDON</h3>
-                <p style="color: var(--text-dim); margin-top: 5px;">advanced modules for meteor.</p>
+                <h2 style="font-size: 2rem;">ADDON</h2>
+                <p style="color: #888; margin: 10px 0;">advanced modules for meteor.</p>
                 <div class="tech-pill">JAVA</div>
             </a>
-            <a href="https://github.com/mourntheloss/recorder" target="_blank" class="card span-2 project-card">
-                <span class="tag">02. GITHUB</span>
-                <h3>RECORDER</h3>
-                <p style="color: var(--text-dim); margin-top: 5px;">c++ lightweight screen capture.</p>
+            <a href="https://github.com/mourntheloss/recorder" target="_blank" style="text-decoration:none; color:inherit;" class="card span-2">
+                <span class="tag">github</span>
+                <h2 style="font-size: 2rem;">RECORDER</h2>
+                <p style="color: #888; margin: 10px 0;">c++ lightweight screen capture.</p>
                 <div class="tech-pill">C++17</div>
             </a>
         </div>
     </section>
 
     <section id="addon" class="page-section">
-        <h2 style="margin-bottom: 30px; border-left: 5px solid var(--accent); padding-left: 15px;">ADDON</h2>
+        <h1 style="margin-bottom: 30px;">ADDON</h1>
         <div class="grid">
             <div class="card span-4">
                 <span class="tag">info</span>
-                <p contenteditable="true" style="outline: none; color: var(--text-dim); font-size: 0.9rem;">
+                <p contenteditable="true" style="outline: none; font-size: 1.1rem; line-height: 1.8;">
                     // i am very interested in crystal aura now<br>
                     // crystal aura plus coming soon? might take a while original is 1.3k and thats mediocre.<br>
-                    // combat modules still number one focus.
+                    // combat modules still number one focus.<br>
                     // already got anchor aura so crystal might be close
                 </p>
             </div>
-            <div class="card span-2">
-                <span class="tag">cool</span>
+            <div class="card span-4">
+                <span class="tag">status</span>
                 <p id="addon-commit-msg">syncing</p>
             </div>
         </div>
     </section>
 
     <section id="about" class="page-section">
-        <h2 style="margin-bottom: 30px; border-left: 5px solid var(--accent); padding-left: 15px;">mourntheloss</h2>
-        <div class="card">
-            <p>i build high-performance code in c++, assembly, and java primarily for windows and linux</p>
+        <h1 style="margin-bottom: 30px;">mourntheloss</h1>
+        <div class="card span-4">
+            <p style="font-size: 1.5rem;">i build high-performance code in c++, assembly, and java primarily for windows and linux</p>
             <button class="btn" onclick="copyDiscord()">COPY_DISCORD_ID</button>
-            <p id="copy-status" style="margin-top: 15px; font-weight: bold; color: var(--accent);"></p>
+            <p id="copy-status" style="margin-top: 15px; font-weight: 800; color: var(--accent);"></p>
         </div>
     </section>
 
@@ -264,21 +226,21 @@
         <div class="grid">
             <div class="card span-2">
                 <span class="tag">random quote</span>
-                <p id="quote-box">"system_online"</p>
+                <p id="quote-box" style="font-size: 1.2rem; min-height: 80px;">"system_online"</p>
                 <button class="btn" onclick="newQuote()">reroll</button>
             </div>
             <div class="card span-2">
                 <span class="tag">GLOBAL_INT</span>
-                <h1 id="click-count" style="text-shadow: none;">0</h1>
+                <h1 id="click-count" style="font-size: 5rem;">0</h1>
                 <button class="btn" onclick="incrementClick()">add</button>
             </div>
         </div>
     </section>
-
 </div>
 
 <script>
-    const links = document.querySelectorAll('nav a');
+    // Tab switching fix
+    const links = document.querySelectorAll('#navbar a');
     const sections = document.querySelectorAll('.page-section');
 
     links.forEach(link => {
@@ -307,7 +269,7 @@
     fetchAddonCommit();
 
     function copyDiscord() {
-        navigator.clipboard.writeText("ugrief");
+        navigator.clipboard.writeText("ugf");
         document.getElementById('copy-status').innerText = ">> copied";
         setTimeout(() => document.getElementById('copy-status').innerText = "", 2000);
     }
@@ -318,7 +280,15 @@
         document.getElementById('click-count').innerText = clicks;
     }
 
-    const quotes = ["blueberry.", "java turns 1kb .java file into 3kb .jar file python turns 3kb .py file into 9 mb .exe file", "download more ram", "if u use arm u need to go", "ppl who bring up bugs like they make code just annoy me "99 bugs in the code" shush lil brotato chip"];
+    // Fixed your array syntax here
+    const quotes = [
+        "blueberry.", 
+        "java turns 1kb .java file into 3kb .jar file python turns 3kb .py file into 9 mb .exe file", 
+        "download more ram", 
+        "if u use arm u need to go", 
+        "ppl who bring up bugs like they make code just annoy me 99 bugs in the code shush lil brotato chip"
+    ];
+
     function newQuote() {
         document.getElementById('quote-box').innerText = `"${quotes[Math.floor(Math.random() * quotes.length)]}"`;
     }
