@@ -8,13 +8,13 @@
     <style>
         :root {
             --bg: #030303;
-            --card-bg: rgba(255, 255, 255, 0.04);
+            --card-bg: rgba(255, 255, 255, 0.03);
             --accent: #00f2ff;
-            --glow: rgba(0, 242, 255, 0.6);
-            --secondary: #ff007a; /* Swapped purple for a punchier pink/red for edits */
+            --glow: rgba(0, 242, 255, 0.5);
+            --secondary: #ff007a;
             --text: #ffffff;
             --text-dim: #999;
-            --transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+            --transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
         }
 
         * { 
@@ -31,22 +31,18 @@
             min-height: 100vh;
         }
 
-        /* Flashy Background Blur */
+        /* Reactive Background */
         .bg-glow {
             position: fixed;
-            width: 400px;
-            height: 400px;
-            background: var(--accent);
-            filter: blur(150px);
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, var(--accent) 0%, transparent 70%);
+            filter: blur(100px);
             border-radius: 50%;
-            opacity: 0.15;
+            opacity: 0.1;
             z-index: -1;
-            animation: moveGlow 10s infinite alternate;
-        }
-
-        @keyframes moveGlow {
-            0% { top: -10%; left: -10%; }
-            100% { top: 80%; left: 80%; }
+            pointer-events: none;
+            transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         nav {
@@ -54,163 +50,163 @@
             top: 25px;
             left: 50%;
             transform: translateX(-50%);
-            background: rgba(10, 10, 10, 0.7);
-            backdrop-filter: blur(25px);
+            background: rgba(10, 10, 10, 0.8);
+            backdrop-filter: blur(20px);
             border: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 8px;
+            padding: 6px;
             border-radius: 100px;
             z-index: 9999;
             display: flex;
-            box-shadow: 0 0 30px rgba(0,0,0,0.8);
+            gap: 5px;
         }
 
         nav button {
             background: none;
             border: none;
             color: var(--text-dim);
-            font-size: 0.8rem;
+            font-size: 0.85rem;
             font-weight: 800;
             cursor: pointer;
-            padding: 10px 22px;
+            padding: 12px 24px;
             transition: var(--transition);
             border-radius: 100px;
-            text-transform: lowercase;
+            position: relative;
+            overflow: hidden;
         }
 
         nav button.active {
             color: #fff;
-            background: var(--accent);
-            box-shadow: 0 0 25px var(--glow);
+            background: rgba(255,255,255,0.1);
+            box-shadow: inset 0 0 10px rgba(255,255,255,0.1);
+        }
+
+        nav button:hover:not(.active) {
+            color: var(--accent);
+            background: rgba(0, 242, 255, 0.05);
         }
 
         .container {
             max-width: 900px;
             margin: 0 auto;
-            padding: 140px 20px;
+            padding: 160px 20px;
         }
 
+        /* Page Transitions */
         .page-section { 
             display: none; 
             opacity: 0;
         }
 
-        /* TikTok Edit Entrance Animation */
         .page-section.active-page { 
             display: block; 
-            animation: zoomShake 0.4s cubic-bezier(0.1, 0.9, 0.2, 1) forwards;
+            animation: slideIn 0.6s cubic-bezier(0.23, 1, 0.32, 1) forwards;
         }
 
-        @keyframes zoomShake {
-            0% { opacity: 0; transform: scale(0.85) translateY(20px); filter: brightness(2); }
-            100% { opacity: 1; transform: scale(1) translateY(0); filter: brightness(1); }
-        }
-
-        .profile-area { text-align: center; margin-bottom: 50px; }
-
-        .profile-img {
-            width: 150px;
-            height: 150px;
-            border-radius: 30px; /* Squircle looks cleaner */
-            border: 2px solid var(--accent);
-            box-shadow: 0 0 50px var(--glow);
-            margin-bottom: 25px;
-            animation: float 4s ease-in-out infinite;
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0) rotate(0deg); }
-            50% { transform: translateY(-15px) rotate(2deg); }
+        @keyframes slideIn {
+            0% { opacity: 0; transform: translateY(30px) scale(0.98); filter: blur(10px); }
+            100% { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
         }
 
         h1 { 
-            font-size: 4.5rem; 
+            font-size: 5rem; 
             font-weight: 900;
-            letter-spacing: -4px; 
-            background: linear-gradient(90deg, #fff, var(--accent), var(--secondary), #fff);
-            background-size: 300% 100%;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            animation: textFlow 4s linear infinite;
-        }
-
-        @keyframes textFlow {
-            0% { background-position: 0% 50%; }
-            100% { background-position: 100% 50%; }
-        }
-
-        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-
-        .card {
-            background: var(--card-bg);
-            backdrop-filter: blur(15px);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            padding: 35px;
-            border-radius: 24px;
-            transition: 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+            letter-spacing: -5px; 
+            text-transform: lowercase;
             position: relative;
         }
 
-        /* Syncing Rotations: Left tilts right, Right tilts left */
-        .card.left:hover {
-            transform: scale(1.03) rotate(2deg);
-            border-color: var(--accent);
-            box-shadow: 10px 10px 40px rgba(0, 242, 255, 0.1);
+        .glitch-text:hover {
+            text-shadow: 0.05em 0 0 var(--secondary), -0.05em -0.025em 0 var(--accent);
+            animation: glitch 500ms infinite;
         }
 
-        .card.right:hover {
-            transform: scale(1.03) rotate(-2deg);
-            border-color: var(--secondary);
-            box-shadow: -10px 10px 40px rgba(255, 0, 122, 0.1);
+        @keyframes glitch {
+            0% { text-shadow: 0.05em 0 0 var(--secondary), -0.05em -0.025em 0 var(--accent); }
+            15% { text-shadow: -0.05em -0.025em 0 var(--secondary), 0.025em 0.025em 0 var(--accent); }
+            50% { text-shadow: 0.025em 0.05em 0 var(--secondary), 0.05em 0 0 var(--accent); }
+            100% { text-shadow: -0.025em 0 0 var(--secondary), -0.025em -0.05em 0 var(--accent); }
+        }
+
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 25px; }
+
+        .card {
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 40px;
+            border-radius: 28px;
+            transition: transform 0.1s ease-out, box-shadow 0.3s ease;
+            transform-style: preserve-3d;
+            perspective: 1000px;
+        }
+
+        .card:hover {
+            border-color: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
         }
 
         .pill {
             display: inline-block;
-            background: #fff;
+            background: var(--accent);
             color: #000;
-            padding: 4px 12px;
-            border-radius: 8px;
-            font-size: 0.65rem;
+            padding: 5px 14px;
+            border-radius: 6px;
+            font-size: 0.6rem;
             font-weight: 900;
             text-transform: uppercase;
-            margin-bottom: 12px;
+            margin-bottom: 15px;
         }
 
         .btn {
             background: #fff;
             color: #000;
             border: none;
-            padding: 16px 32px;
-            border-radius: 16px;
+            padding: 18px 36px;
+            border-radius: 18px;
             font-weight: 800;
             cursor: pointer;
-            transition: 0.3s;
-            margin-top: 15px;
+            transition: var(--transition);
+            text-transform: lowercase;
         }
 
-        .btn:hover {
-            transform: scale(1.05) translateY(-3px);
-            box-shadow: 0 15px 30px rgba(255,255,255,0.2);
+        .btn:active {
+            transform: scale(0.9);
         }
 
         #click-count {
-            font-size: 7rem;
+            font-size: 8rem;
             font-weight: 900;
             line-height: 1;
+            margin-bottom: 10px;
+        }
+
+        .profile-img {
+            width: 140px;
+            height: 140px;
+            border-radius: 40px;
+            border: 2px solid var(--accent);
+            transition: var(--transition);
+            cursor: pointer;
+        }
+
+        .profile-img:hover {
+            transform: rotate(5deg) scale(1.1);
+            box-shadow: 0 0 40px var(--glow);
         }
 
         @media (max-width: 768px) {
             .grid { grid-template-columns: 1fr; }
-            h1 { font-size: 3.2rem; }
-            nav { width: 90%; justify-content: space-around; }
-            nav button { padding: 10px 12px; font-size: 0.7rem; }
+            h1 { font-size: 3.5rem; letter-spacing: -2px; }
+            nav { width: 95%; }
+            nav button { padding: 10px 15px; font-size: 0.75rem; }
         }
     </style>
 </head>
 <body>
 
-<div class="bg-glow"></div>
+<div class="bg-glow" id="cursor-glow"></div>
 
-<nav>
+<nav id="navbar">
     <button onclick="showPage('home')" id="btn-home" class="active">home</button>
     <button onclick="showPage('projects')" id="btn-projects">work</button>
     <button onclick="showPage('updates')" id="btn-updates">updates</button>
@@ -219,130 +215,161 @@
 </nav>
 
 <div class="container">
-    
     <section id="home" class="page-section active-page">
-        <div class="profile-area">
+        <div class="profile-area" style="text-align: center; margin-bottom: 60px;">
             <img src="https://github.com/mourntheloss.png" alt="pfp" class="profile-img">
-            <h1>mourntheloss</h1>
-            <p style="color: var(--text-dim); font-size: 1.1rem; margin-top: 10px; font-weight: 500;">building high-performance tools</p>
+            <h1 class="glitch-text">mourntheloss</h1>
+            <p style="color: var(--text-dim); font-size: 1.2rem; margin-top: 10px; font-weight: 500;">i still dont know what language is my main language its currently c++ but it can go to asm or java easily</p>
         </div>
 
         <div class="grid">
-            <div class="card left">
+            <div class="card tilt-card" data-tilt-color="var(--accent)">
                 <span class="pill">active</span>
                 <h3>updating addon</h3>
-                <p style="color: var(--text-dim); margin-top: 8px;">making meteor client actually good. updates daily for now</p>
+                <p style="color: var(--text-dim); margin-top: 10px;">my magnum opus. updates whenever i feel like it could be 0 commits for a month then 50 commits in one day</p>
             </div>
-            <div class="card right">
+            <div class="card tilt-card" data-tilt-color="var(--secondary)">
                 <span class="pill">stack</span>
-                <h3>The Tech</h3>
-                <p style="color: var(--accent); font-weight: 800; margin-top: 8px;">C++ • ASM • JAVA • PYTHON</p>
+                <h3 style="color: var(--accent);">low level</h3>
+                <p style="color: var(--text-dim); font-weight: 800; margin-top: 10px; letter-spacing: 1px;">C++ • ASM • JAVA • PYTHON</p>
             </div>
         </div>
     </section>
 
     <section id="projects" class="page-section">
-        <h2 style="font-size: 3rem; margin-bottom: 25px; letter-spacing: -2px;">featured works</h2>
+        <h2 style="font-size: 3rem; margin-bottom: 30px; letter-spacing: -2px;">featured</h2>
         <div class="grid">
-            <div class="card left">
-                <span class="pill">java</span>
+            <div class="card tilt-card">
+                <span class="pill" style="background: #f7df1e;">java</span>
                 <h3>ADDON</h3>
-                <p style="color: var(--text-dim);">a meteor client addon meant for adding stuff meteor (and other addons) are missing</p>
+                <p style="color: var(--text-dim);">custom meteor client addon that adds modules meteor client are missing</p>
             </div>
-            <div class="card right">
-                <span class="pill">c++</span>
+            <div class="card tilt-card">
+                <span class="pill" style="background: #00599c; color: white;">c++</span>
                 <h3>RECORDER</h3>
-                <p style="color: var(--text-dim);">lightweight screen recording software made in c++</p>
+                <p style="color: var(--text-dim);">screen capture engine.</p>
             </div>
         </div>
     </section>
 
     <section id="updates" class="page-section">
-        <div class="card left" style="width: 100%;">
-            <span class="pill">mans inner thoughts</span>
-            <p style="font-size: 1.4rem; font-weight: 600; line-height: 1.8;">
-                • crystal aura is NOT coming soon that mediocre original module from meteor is 1.3k lines<br>
-                • interested in combat modules now<br>
-                • dropping soon<br>
-                • ima be like carti im never gonna release this
-            </p>
+        <div class="card" style="width: 100%; border-left: 4px solid var(--secondary);">
+            <span class="pill">internal dev log</span>
+            <div style="font-size: 1.2rem; font-weight: 600; line-height: 2; color: var(--text-dim);">
+                • crystal aura is <span style="color: var(--secondary)">big</span> (1.3k lines)<br>
+                • interested in advanced combat logic now<br>
+                • coming soon<br>
+                • never dropping this ima be like carti
+            </div>
         </div>
     </section>
 
     <section id="about" class="page-section">
-        <div class="card right" style="text-align: center;">
-            <h2 style="font-size: 3rem; margin-bottom: 10px;">connect</h2>
-            <p style="color: var(--text-dim); margin-bottom: 20px;">low level dev</p>
-            <button class="btn" onclick="copyDiscord()">discord</button>
-            <p id="copy-status" style="margin-top: 15px; color: var(--accent); font-weight: 800;"></p>
+        <div class="card tilt-card" style="text-align: center; padding: 60px;">
+            <h2 style="font-size: 4rem; letter-spacing: -3px; margin-bottom: 10px;">connect</h2>
+            <p style="color: var(--text-dim); margin-bottom: 30px;">system architect & low-level enthusiast</p>
+            <button class="btn" onclick="copyDiscord()">copy discord</button>
+            <p id="copy-status" style="margin-top: 20px; color: var(--accent); font-weight: 800; min-height: 20px;"></p>
         </div>
     </section>
 
     <section id="extra" class="page-section">
         <div class="grid">
-            <div class="card left">
-                <span class="pill">thoughts</span>
-                <h3 id="quote-box" style="height: 60px;">"i think a lot"</h3>
-                <button class="btn" onclick="newQuote()" style="padding: 10px 20px;">Refresh</button>
+            <div class="card tilt-card">
+                <span class="pill">logic</span>
+                <h3 id="quote-box" style="height: 80px; font-style: italic;">"i think a lot"</h3>
+                <button class="btn" onclick="newQuote()">new thought</button>
             </div>
-            <div class="card right" style="text-align: center;">
-                <span class="pill">click me</span>
+            <div class="card" style="text-align: center;">
+                <span class="pill">clicker</span>
                 <h1 id="click-count">0</h1>
-                <button class="btn" onclick="incrementClick()" style="padding: 10px 20px;">spam</button>
+                <button class="btn" onclick="incrementClick(event)">spam click</button>
             </div>
         </div>
     </section>
 </div>
 
 <script>
+    const glow = document.getElementById('cursor-glow');
+    document.addEventListener('mousemove', (e) => {
+        const x = e.clientX - 300;
+        const y = e.clientY - 300;
+        glow.style.transform = `translate(${x}px, ${y}px)`;
+    });
+
     function showPage(pageId) {
         document.querySelectorAll('nav button').forEach(btn => btn.classList.remove('active'));
         document.getElementById('btn-' + pageId).classList.add('active');
 
-        const sections = document.querySelectorAll('.page-section');
-        sections.forEach(sec => {
-            sec.classList.remove('active-page');
+        document.querySelectorAll('.page-section').forEach(sec => sec.classList.remove('active-page'));
+        document.getElementById(pageId).classList.add('active-page');
+        window.scrollTo({top: 0, behavior: 'smooth'});
+    }
+
+    document.querySelectorAll('.tilt-card').forEach(card => {
+        card.addEventListener('mousemove', (e) => {
+            const rect = card.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            const centerX = rect.width / 2;
+            const centerY = rect.height / 2;
+            const rotateX = (centerY - y) / 10;
+            const rotateY = (x - centerX) / 10;
+
+            card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
         });
 
-        const target = document.getElementById(pageId);
-        target.classList.add('active-page');
+        card.addEventListener('mouseleave', () => {
+            card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`;
+        });
+    });
 
-        window.scrollTo({top: 0, behavior: 'smooth'});
+    let clicks = 0;
+    function incrementClick(e) {
+        clicks++;
+        const count = document.getElementById('click-count');
+        count.innerText = clicks;
+        
+        count.animate([
+            { transform: 'translate(2px, 2px) rotate(0deg)' },
+            { transform: 'translate(-2px, -2px) rotate(1deg)' },
+            { transform: 'translate(0, 0) rotate(0deg)' }
+        ], { duration: 100 });
+
+        const circle = document.createElement('div');
+        circle.style.cssText = `
+            position: fixed; top: ${e.clientY}px; left: ${e.clientX}px;
+            width: 10px; height: 10px; background: var(--accent);
+            border-radius: 50%; pointer-events: none; transform: translate(-50%, -50%);
+            z-index: 10000;
+        `;
+        document.body.appendChild(circle);
+        circle.animate([
+            { opacity: 1, transform: 'translate(-50%, -50%) scale(1)' },
+            { opacity: 0, transform: 'translate(-50%, -50%) scale(10)' }
+        ], { duration: 500 }).onfinish = () => circle.remove();
     }
 
     function copyDiscord() {
         navigator.clipboard.writeText("ugf");
         const status = document.getElementById('copy-status');
-        status.innerText = "COPIED!";
+        status.innerText = "// COPIED TO CLIPBOARD";
         setTimeout(() => status.innerText = "", 2000);
     }
 
-    let clicks = 0;
-    function incrementClick() {
-        clicks++;
-        const count = document.getElementById('click-count');
-        count.innerText = clicks;
-        count.animate([
-            { transform: 'scale(1.5)', filter: 'brightness(2)' },
-            { transform: 'scale(1)', filter: 'brightness(1)' }
-        ], { duration: 200 });
-    }
-
     const quotes = [
-        "real ones still hate java", 
-        "real homies hate duke.", 
-        "donlo is my everything", 
-        "macs are pretty cool", 
-        "ppl who complain abt bugs are so corny",
-        "donlo.",
-        "also try minecraft",
-        "last message",
-        "very rare message"
+        "real ones still hate java", "real homies hate duke.", "donlo is my everything", 
+        "macs are pretty cool", "bugs are just undocumented features", "also try minecraft",
+        "assembly is a love language", "optimizing for fun"
     ];
 
     function newQuote() {
         const box = document.getElementById('quote-box');
-        box.innerText = `"${quotes[Math.floor(Math.random() * quotes.length)]}"`;
+        box.style.opacity = 0;
+        setTimeout(() => {
+            box.innerText = `"${quotes[Math.floor(Math.random() * quotes.length)]}"`;
+            box.style.opacity = 1;
+        }, 200);
     }
 </script>
 </body>
