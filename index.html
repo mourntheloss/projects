@@ -7,21 +7,20 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg: #050505;
-            --card-bg: rgba(255, 255, 255, 0.02);
+            --bg: #030303;
+            --card-bg: rgba(255, 255, 255, 0.03);
             --accent: #00f2ff;
-            --accent-glow: rgba(0, 242, 255, 0.3);
+            --accent-glow: rgba(0, 242, 255, 0.4);
             --secondary: #ff007a;
             --text: #ffffff;
-            --text-dim: #888;
-            --transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            --text-dim: #777;
+            --transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
         }
 
         * { 
             box-sizing: border-box; 
             margin: 0; padding: 0;
             font-family: 'Plus Jakarta Sans', sans-serif;
-            -webkit-tap-highlight-color: transparent;
         }
 
         body {
@@ -31,28 +30,18 @@
             min-height: 100vh;
         }
 
-        body::before {
-            content: "";
+        #cursor-glow {
             position: fixed;
             top: 0; left: 0;
-            width: 100%; height: 100%;
-            background: 
-                radial-gradient(at 0% 0%, rgba(0, 242, 255, 0.03) 0px, transparent 50%),
-                radial-gradient(at 100% 100%, rgba(255, 0, 122, 0.03) 0px, transparent 50%);
-            z-index: -2;
-        }
-
-        .bg-glow {
-            position: fixed;
-            width: 500px;
-            height: 500px;
+            width: 600px; height: 600px;
             background: radial-gradient(circle, var(--accent-glow) 0%, transparent 70%);
-            filter: blur(80px);
             border-radius: 50%;
-            opacity: 0.15;
-            z-index: -1;
             pointer-events: none;
-            transition: transform 0.2s ease-out;
+            z-index: -1;
+            filter: blur(80px);
+            opacity: 0.2;
+            transform: translate(-50%, -50%);
+            transition: transform 0.1s ease-out;
         }
 
         nav {
@@ -60,56 +49,38 @@
             top: 25px;
             left: 50%;
             transform: translateX(-50%);
-            background: rgba(10, 10, 10, 0.4);
-            backdrop-filter: blur(20px) saturate(180%);
-            border: 1px solid rgba(255, 255, 255, 0.08);
+            background: rgba(10, 10, 10, 0.6);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
             padding: 6px;
             border-radius: 100px;
             z-index: 9999;
             display: flex;
             gap: 5px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
 
         nav button {
-            background: none;
-            border: none;
+            background: none; border: none;
             color: var(--text-dim);
-            font-size: 0.85rem;
-            font-weight: 800;
-            cursor: pointer;
-            padding: 12px 24px;
+            font-size: 0.85rem; font-weight: 800;
+            cursor: pointer; padding: 12px 24px;
             transition: var(--transition);
             border-radius: 100px;
         }
 
-        nav button.active {
-            color: #fff;
-            background: rgba(255,255,255,0.08);
-            box-shadow: inset 0 0 10px rgba(255,255,255,0.05);
-        }
+        nav button.active { color: #fff; background: rgba(255,255,255,0.1); }
 
-        .container {
-            max-width: 900px;
-            margin: 0 auto;
-            padding: 160px 20px;
-        }
+        .container { max-width: 900px; margin: 0 auto; padding: 160px 20px; }
 
         .page-section { 
-            display: none; 
-            opacity: 0;
-            transform: translateY(20px);
-            transition: opacity 0.5s ease, transform 0.5s ease;
+            display: none; opacity: 0; 
+            transform: translateY(20px); 
+            transition: all 0.5s ease;
         }
 
-        .page-section.active-page { 
-            display: block; 
-            opacity: 1;
-            transform: translateY(0);
-        }
+        .page-section.active-page { display: block; opacity: 1; transform: translateY(0); }
 
         h1 { font-size: 5rem; font-weight: 900; letter-spacing: -4px; text-transform: lowercase; }
-        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 25px; }
 
         .card {
             background: var(--card-bg);
@@ -117,97 +88,87 @@
             padding: 40px;
             border-radius: 28px;
             position: relative;
+            backdrop-filter: blur(10px);
         }
 
-        .tilt-card {
-            transition: transform 0.1s ease-out;
-            transform-style: preserve-3d;
-        }
-
-        .magnet-card {
-            transition: transform 0.3s cubic-bezier(0.23, 1, 0.32, 1);
-        }
-
-        .beam-card {
-            overflow: hidden;
-            z-index: 1;
-        }
-        .beam-card::before {
-            content: "";
+        .magnet-card .spotlight {
             position: absolute;
-            top: -50%; left: -50%;
-            width: 200%; height: 200%;
+            inset: 0;
+            background: radial-gradient(circle at var(--x) var(--y), rgba(0, 242, 255, 0.15), transparent 40%);
+            border-radius: 28px;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        .magnet-card:hover .spotlight { opacity: 1; }
+
+        .beam-card { overflow: hidden; z-index: 1; border: none; }
+        .beam-card::before {
+            content: ""; position: absolute;
+            top: -50%; left: -50%; width: 200%; height: 200%;
             background: conic-gradient(from 0deg, transparent 70%, var(--accent) 100%);
-            animation: rotateBeam 4s linear infinite;
-            z-index: -2;
+            animation: rotateBeam 4s linear infinite; z-index: -2;
         }
         .beam-inner {
-            position: absolute;
-            inset: 1px;
-            background: #080808;
-            border-radius: 27px;
-            z-index: -1;
+            position: absolute; inset: 2px;
+            background: #080808; border-radius: 26px; z-index: -1;
         }
-        @keyframes rotateBeam {
-            100% { transform: rotate(360deg); }
-        }
+        @keyframes rotateBeam { 100% { transform: rotate(360deg); } }
 
-        /* Liquid Buttons */
         .btn-liquid {
-            position: relative;
-            overflow: hidden;
-            background: #fff;
-            color: #000;
-            border: none;
-            padding: 18px 36px;
-            border-radius: 18px;
-            font-weight: 800;
-            cursor: pointer;
-            z-index: 1;
-            transition: color 0.4s;
+            position: relative; overflow: hidden;
+            background: #fff; color: #000;
+            border: none; padding: 18px 36px; border-radius: 18px;
+            font-weight: 800; cursor: pointer; z-index: 1;
         }
-        .btn-liquid span { position: relative; z-index: 2; }
         .btn-liquid::after {
-            content: "";
-            position: absolute;
-            top: var(--y, 50%);
-            left: var(--x, 50%);
-            width: 0; height: 0;
-            background: var(--accent);
-            border-radius: 50%;
-            transform: translate(-50%, -50%);
-            transition: width 0.6s, height 0.6s;
-            z-index: 1;
+            content: ""; position: absolute;
+            top: var(--py); left: var(--px);
+            width: 0; height: 0; background: var(--accent);
+            border-radius: 50%; transform: translate(-50%, -50%);
+            transition: width 0.5s, height 0.5s; z-index: -1;
         }
         .btn-liquid:hover::after { width: 400px; height: 400px; }
 
-        .pill {
-            display: inline-block;
-            background: rgba(255,255,255,0.1);
-            color: #fff;
-            padding: 6px 14px;
-            border-radius: 8px;
-            font-size: 0.65rem;
+        .btn-cyber {
+            background: transparent;
+            color: var(--accent);
+            border: 2px solid var(--accent);
+            padding: 14px 28px;
+            border-radius: 12px;
             font-weight: 800;
             text-transform: uppercase;
-            margin-bottom: 15px;
-            border: 1px solid rgba(255,255,255,0.1);
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 0 10px var(--accent-glow);
+        }
+        .btn-cyber:hover {
+            background: var(--accent);
+            color: #000;
+            box-shadow: 0 0 30px var(--accent);
         }
 
-        #click-count { font-size: 8rem; font-weight: 900; line-height: 1; }
-
-        @media (max-width: 768px) {
-            .grid { grid-template-columns: 1fr; }
-            h1 { font-size: 3rem; }
-            nav { width: 90%; overflow-x: auto; justify-content: flex-start; }
+        .pill {
+            display: inline-block; background: var(--accent); color: #000;
+            padding: 5px 12px; border-radius: 6px; font-size: 0.6rem;
+            font-weight: 900; text-transform: uppercase; margin-bottom: 15px;
         }
+        
+        #click-count { font-size: 8rem; font-weight: 900; }
+
+        @keyframes glitch {
+            0% { text-shadow: 2px 0 var(--secondary), -2px 0 var(--accent); }
+            50% { text-shadow: -2px 0 var(--secondary), 2px 0 var(--accent); }
+            100% { text-shadow: 2px 0 var(--secondary), -2px 0 var(--accent); }
+        }
+        .glitch-text:hover { animation: glitch 0.2s infinite; }
     </style>
 </head>
 <body>
 
-<div class="bg-glow" id="cursor-glow"></div>
+<div id="cursor-glow"></div>
 
-<nav id="navbar">
+<nav>
     <button onclick="showPage('home')" id="btn-home" class="active">home</button>
     <button onclick="showPage('projects')" id="btn-projects">work</button>
     <button onclick="showPage('updates')" id="btn-updates">updates</button>
@@ -218,36 +179,38 @@
 <div class="container">
     <section id="home" class="page-section active-page">
         <div style="text-align: center; margin-bottom: 60px;">
-            <img src="https://github.com/mourntheloss.png" alt="pfp" style="width:120px; border-radius:35px; border:2px solid var(--accent); margin-bottom:20px;">
-            <h1>mourntheloss</h1>
-            <p style="color: var(--text-dim); font-size: 1.1rem;">focused on c++, java, and asm. i dont know which ones my favorite right now im leaning towards c++</p>
+            <img src="https://github.com/mourntheloss.png" style="width:120px; border-radius:35px; border:2px solid var(--accent); margin-bottom:20px;">
+            <h1 class="glitch-text">mourntheloss</h1>
+            <p style="color: var(--text-dim);">low level developer</p>
         </div>
         <div class="grid">
             <div class="card tilt-card">
-                <span class="pill" style="background: var(--accent); color:#000;">status</span>
-                <h3>active project</h3>
-                <p style="color: var(--text-dim); margin-top: 10px;">addon for meteor client</p>
+                <span class="pill">status</span>
+                <h3>active</h3>
+                <p style="color: var(--text-dim); margin-top:10px;">working on ADDON. planned break in april</p>
             </div>
             <div class="card tilt-card">
                 <span class="pill">stack</span>
-                <h3 style="color: var(--accent);">low level</h3>
-                <p style="color: var(--text-dim); margin-top: 10px; font-weight:800;">C++ • ASM • JAVA • PYTHON</p>
+                <h3 style="color: var(--accent);">c++ / asm / java</h3>
+                <p style="color: var(--text-dim); margin-top:10px;">i like low level</p>
             </div>
         </div>
     </section>
 
     <section id="projects" class="page-section">
-        <h2 style="font-size: 3rem; margin-bottom: 30px; letter-spacing: -2px;">best</h2>
+        <h2 style="font-size: 3rem; margin-bottom: 30px;">featured</h2>
         <div class="grid">
             <div class="card magnet-card">
-                <span class="pill">java</span>
+                <div class="spotlight"></div>
+                <span class="pill" style="background:#f7df1e">java</span>
                 <h3>ADDON</h3>
-                <p style="color: var(--text-dim);">an addon for meteor client to add modules it doesnt add</p>
+                <p style="color: var(--text-dim);">an addon that adds all the stuff other clients have but meteor and other addons dont</p>
             </div>
             <div class="card magnet-card">
-                <span class="pill">c++</span>
+                <div class="spotlight"></div>
+                <span class="pill" style="background:#00599c; color:#fff">c++</span>
                 <h3>RECORDER</h3>
-                <p style="color: var(--text-dim);">capture engine logic.</p>
+                <p style="color: var(--text-dim);">unoptimized screen recording logic.</p>
             </div>
         </div>
     </section>
@@ -255,37 +218,32 @@
     <section id="updates" class="page-section">
         <div class="card beam-card">
             <div class="beam-inner"></div>
-            <span class="pill">v1.4.0 log</span>
-            <div style="font-size: 1.2rem; font-weight: 600; line-height: 2; color: var(--text-dim); position: relative;">
-                • crystal aura optimized for <span style="color: var(--accent)">low latency</span><br>
-                • added asm-level hooks for packet handling<br>
-                • rewriting combat logic from scratch<br>
-                • never dropping this ima be like carti
+            <span class="pill" style="background:var(--secondary); color:#fff;">devlog</span>
+            <div style="font-size: 1.2rem; line-height: 1.8; color: var(--text-dim);">
+                • ima be fr i dont know how memory works its modulular so i never learnt memory side only client side<br>
+                • crystal aura big (1.3k lines for the original mediocre one)<br>
+                • update coming soon
             </div>
         </div>
     </section>
 
     <section id="about" class="page-section">
-        <div class="card" style="text-align: center; padding: 80px 20px;">
-            <h2 style="font-size: 4rem; margin-bottom: 20px;">do not talk to me</h2>
-            <button class="btn-liquid" onclick="copyDiscord()">
-                <span>copy </span>
-            </button>
-            <p id="copy-status" style="margin-top: 20px; color: var(--accent); font-weight: 800; height: 20px;"></p>
+        <div class="card" style="text-align: center; padding: 60px;">
+            <h2 style="font-size: 4rem; margin-bottom: 20px;">connect</h2>
+            <button class="btn-liquid" onclick="copyDiscord()"><span>copy discord</span></button>
+            <p id="copy-status" style="margin-top:20px; color:var(--accent); font-weight:800;"></p>
         </div>
     </section>
 
     <section id="extra" class="page-section">
         <div class="grid">
             <div class="card">
-                <span class="pill">thoughts</span>
-                <h3 id="quote-box" style="height: 80px; font-style: italic; color: var(--text-dim);">"i think a lot"</h3>
-                <button class="btn-liquid" onclick="newQuote()"><span>new thought</span></button>
+                <h3 id="quote-box" style="height: 60px; font-style: italic; color:var(--text-dim);">"i think a lot"</h3>
+                <button class="btn-cyber" onclick="newQuote()">new thought</button>
             </div>
             <div class="card" style="text-align: center;">
-                <span class="pill">counter</span>
                 <h1 id="click-count">0</h1>
-                <button class="btn-liquid" onclick="incrementClick(event)"><span>spam click</span></button>
+                <button class="btn-cyber" onclick="incrementClick(event)">spam</button>
             </div>
         </div>
     </section>
@@ -294,29 +252,15 @@
 <script>
     const glow = document.getElementById('cursor-glow');
     document.addEventListener('mousemove', (e) => {
-        glow.style.transform = `translate(${e.clientX - 250}px, ${e.clientY - 250}px)`;
+        glow.style.left = e.clientX + 'px';
+        glow.style.top = e.clientY + 'px';
     });
 
     function showPage(pageId) {
-        const sections = document.querySelectorAll('.page-section');
-        const current = document.querySelector('.active-page');
-        
-        current.style.opacity = '0';
-        current.style.transform = 'translateY(-10px)';
-
-        setTimeout(() => {
-            sections.forEach(sec => sec.classList.remove('active-page'));
-            document.querySelectorAll('nav button').forEach(btn => btn.classList.remove('active'));
-            
-            const next = document.getElementById(pageId);
-            next.classList.add('active-page');
-            document.getElementById('btn-' + pageId).classList.add('active');
-            
-            setTimeout(() => {
-                next.style.opacity = '1';
-                next.style.transform = 'translateY(0)';
-            }, 50);
-        }, 300);
+        document.querySelectorAll('.page-section').forEach(s => s.classList.remove('active-page'));
+        document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
+        document.getElementById(pageId).classList.add('active-page');
+        document.getElementById('btn-' + pageId).classList.add('active');
     }
 
     document.querySelectorAll('.tilt-card').forEach(card => {
@@ -324,17 +268,24 @@
             const rect = card.getBoundingClientRect();
             const x = (e.clientX - rect.left) / rect.width - 0.5;
             const y = (e.clientY - rect.top) / rect.height - 0.5;
-            card.style.transform = `perspective(1000px) rotateX(${y * -15}deg) rotateY(${x * 15}deg) scale(1.02)`;
+            card.style.transform = `perspective(1000px) rotateX(${y * -10}deg) rotateY(${x * 10}deg) scale(1.02)`;
         });
         card.addEventListener('mouseleave', () => card.style.transform = '');
     });
 
     document.querySelectorAll('.magnet-card').forEach(card => {
+        const spotlight = card.querySelector('.spotlight');
         card.addEventListener('mousemove', (e) => {
             const rect = card.getBoundingClientRect();
-            const x = e.clientX - rect.left - rect.width / 2;
-            const y = e.clientY - rect.top - rect.height / 2;
-            card.style.transform = `translate(${x * 0.1}px, ${y * 0.1}px)`;
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            
+            const moveX = (x - rect.width/2) * 0.15;
+            const moveY = (y - rect.height/2) * 0.15;
+            card.style.transform = `translate(${moveX}px, ${moveY}px)`;
+            
+            card.style.setProperty('--x', x + 'px');
+            card.style.setProperty('--y', y + 'px');
         });
         card.addEventListener('mouseleave', () => card.style.transform = '');
     });
@@ -342,33 +293,27 @@
     document.querySelectorAll('.btn-liquid').forEach(btn => {
         btn.addEventListener('mousemove', (e) => {
             const rect = btn.getBoundingClientRect();
-            btn.style.setProperty('--x', (e.clientX - rect.left) + 'px');
-            btn.style.setProperty('--y', (e.clientY - rect.top) + 'px');
+            btn.style.setProperty('--px', (e.clientX - rect.left) + 'px');
+            btn.style.setProperty('--py', (e.clientY - rect.top) + 'px');
         });
     });
+
+    function copyDiscord() {
+        navigator.clipboard.writeText("ugf");
+        document.getElementById('copy-status').innerText = "// COPIED";
+        setTimeout(() => document.getElementById('copy-status').innerText = "", 2000);
+    }
 
     let clicks = 0;
     function incrementClick(e) {
         clicks++;
         document.getElementById('click-count').innerText = clicks;
-        document.getElementById('click-count').animate([
-            { transform: 'scale(1.2)' }, { transform: 'scale(1)' }
-        ], { duration: 100 });
     }
 
-    function copyDiscord() {
-        navigator.clipboard.writeText("ugf");
-        const status = document.getElementById('copy-status');
-        status.innerText = "// COPIED TO CLIPBOARD";
-        setTimeout(() => status.innerText = "", 2000);
-    }
-
-    const quotes = ["real ones hate java", "optimization is an art", "asm is a love language", "stay low level"];
+    const quotes = ["javas pretty easy", "personally if ur learning coding dont learn hello world if u dont want to learn hello world learn with what u want to do", "i dont like low level its better for some things but significantly worse for some other things"];
     function newQuote() {
-        const box = document.getElementById('quote-box');
-        box.innerText = `"${quotes[Math.floor(Math.random() * quotes.length)]}"`;
+        document.getElementById('quote-box').innerText = `"${quotes[Math.floor(Math.random()*quotes.length)]}"`;
     }
 </script>
-
 </body>
 </html>
