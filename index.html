@@ -139,7 +139,6 @@
             padding: 50px;
             border: 10px dashed yellow !important;
             text-align: center;
-            cursor: wait;
         }
 
         #legal-nightmare h1 {
@@ -169,7 +168,6 @@
             color: white;
             border: 5px solid white;
         }
-
     </style>
 </head>
 <body>
@@ -280,7 +278,7 @@
                    agree to the cookies and privacy policy.</p>
             </div>
             <p style="font-size: 50px;">woah</p>
-            <ul style="text-align: left; list-style: square;">
+            <ul style="text-align: left; list-style: square; display: inline-block;">
                 <li>no stealing</li>
                 <li>copyright fdgfdgdfhgsfd</li>
                 <li>everything is copyrighted 1994-2026!!!!</li>
@@ -297,17 +295,27 @@
     const sections = document.querySelectorAll('.page-section');
 
     links.forEach(link => {
-        link.addEventListener('click', () => {
+        link.addEventListener('click', (e) => {
+            // prevent default link behavior
+            e.preventDefault();
+            
+            const targetId = link.getAttribute('data-target');
+
+            // remov active llass
             links.forEach(l => l.classList.remove('active'));
+            // actiev class
             link.classList.add('active');
+
+            // hide section
             sections.forEach(s => {
                 s.classList.remove('active-page');
-                if(s.id === link.dataset.target) s.classList.add('active-page');
+                if(s.id === targetId) {
+                    s.classList.add('active-page');
+                }
             });
         });
     });
 
-    // mouse effect
     document.addEventListener('mousemove', (e) => {
         const x = (e.clientX / window.innerWidth) * 100;
         const y = (e.clientY / window.innerHeight) * 100;
@@ -315,13 +323,13 @@
         document.body.style.setProperty('--mouse-y', y + '%');
     });
 
-    // discord copy
     function copyDiscord() {
-        const tag = "ugrief"; 
-        navigator.clipboard.writeText(tag);
-        const status = document.getElementById('copy-status');
-        status.innerText = "Copied!";
-        setTimeout(() => status.innerText = "", 2000);
+        const tag = "ugrz"; 
+        navigator.clipboard.writeText(tag).then(() => {
+            const status = document.getElementById('copy-status');
+            status.innerText = "Copied!";
+            setTimeout(() => status.innerText = "", 2000);
+        });
     }
 
     let clicks = 0;
@@ -333,9 +341,15 @@
     const quotes = [
         "a banana walks into a freezer and says what do i do here",
         "i learn",
-        "does anyone esle hate gradle why does it fail at the slightest inconvenience",
+        "does anyone else hate gradle? why does it fail at the slightest inconvenience?",
         "real ones all dislike jeremy",
-        "c# is c++ and javas baby"
+        "c# is c++ and java's baby"
+        "bobbys cool"
+        "also try minecraft"
+        "last quote"
+        "no"
+        "funny"
+        "that joke was very funny"
     ];
 
     function newQuote() {
