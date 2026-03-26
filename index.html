@@ -7,326 +7,313 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg: #050505;
-            --card-bg: rgba(255, 255, 255, 0.03);
+            --bg: #030303;
+            --card-bg: rgba(255, 255, 255, 0.04);
             --accent: #00f2ff;
-            --glow: rgba(0, 242, 255, 0.5);
-            --secondary: #7000ff;
+            --glow: rgba(0, 242, 255, 0.6);
+            --secondary: #ff007a; /* Swapped purple for a punchier pink/red for edits */
             --text: #ffffff;
-            --text-dim: #a0a0a0;
-            --transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            --text-dim: #999;
+            --transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
         }
 
         * { 
             box-sizing: border-box; 
             margin: 0; padding: 0;
             font-family: 'Plus Jakarta Sans', sans-serif;
+            -webkit-tap-highlight-color: transparent;
         }
 
         body {
             background-color: var(--bg);
             color: var(--text);
             overflow-x: hidden;
-            background: radial-gradient(circle at 50% 50%, #1a1a2e 0%, #050505 100%);
+            min-height: 100vh;
         }
 
-        /* Animated Background Particles Effect */
-        body::after {
-            content: "";
+        /* Flashy Background Blur */
+        .bg-glow {
             position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background-image: radial-gradient(var(--accent) 1px, transparent 1px);
-            background-size: 50px 50px;
-            opacity: 0.05;
+            width: 400px;
+            height: 400px;
+            background: var(--accent);
+            filter: blur(150px);
+            border-radius: 50%;
+            opacity: 0.15;
             z-index: -1;
-            animation: moveBg 20s linear infinite;
+            animation: moveGlow 10s infinite alternate;
         }
 
-        @keyframes moveBg {
-            from { background-position: 0 0; }
-            to { background-position: 100px 100px; }
+        @keyframes moveGlow {
+            0% { top: -10%; left: -10%; }
+            100% { top: 80%; left: 80%; }
         }
 
         nav {
             position: fixed;
-            top: 20px;
+            top: 25px;
             left: 50%;
             transform: translateX(-50%);
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(20px);
+            background: rgba(10, 10, 10, 0.7);
+            backdrop-filter: blur(25px);
             border: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 10px 20px;
-            border-radius: 50px;
-            z-index: 1000;
+            padding: 8px;
+            border-radius: 100px;
+            z-index: 9999;
             display: flex;
-            gap: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            animation: slideDown 1s ease;
+            box-shadow: 0 0 30px rgba(0,0,0,0.8);
         }
 
-        @keyframes slideDown {
-            from { top: -100px; opacity: 0; }
-            to { top: 20px; opacity: 1; }
-        }
-
-        nav a {
+        nav button {
+            background: none;
+            border: none;
             color: var(--text-dim);
-            text-decoration: none;
-            font-size: 0.85rem;
-            font-weight: 600;
+            font-size: 0.8rem;
+            font-weight: 800;
             cursor: pointer;
-            padding: 8px 18px;
+            padding: 10px 22px;
             transition: var(--transition);
-            border-radius: 25px;
+            border-radius: 100px;
+            text-transform: lowercase;
         }
 
-        nav a:hover, nav a.active {
+        nav button.active {
             color: #fff;
             background: var(--accent);
-            box-shadow: 0 0 20px var(--glow);
-            transform: scale(1.1);
+            box-shadow: 0 0 25px var(--glow);
         }
 
         .container {
             max-width: 900px;
             margin: 0 auto;
-            padding: 120px 20px;
+            padding: 140px 20px;
         }
 
         .page-section { 
             display: none; 
-            animation: zoomIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+            opacity: 0;
         }
 
-        @keyframes zoomIn {
-            0% { opacity: 0; transform: scale(0.5) rotate(-5deg); filter: blur(20px); }
-            100% { opacity: 1; transform: scale(1) rotate(0deg); filter: blur(0); }
+        /* TikTok Edit Entrance Animation */
+        .page-section.active-page { 
+            display: block; 
+            animation: zoomShake 0.4s cubic-bezier(0.1, 0.9, 0.2, 1) forwards;
         }
 
-        .active-page { display: block; }
-
-        .profile-area {
-            text-align: center;
-            margin-bottom: 60px;
+        @keyframes zoomShake {
+            0% { opacity: 0; transform: scale(0.85) translateY(20px); filter: brightness(2); }
+            100% { opacity: 1; transform: scale(1) translateY(0); filter: brightness(1); }
         }
+
+        .profile-area { text-align: center; margin-bottom: 50px; }
 
         .profile-img {
-            width: 140px;
-            height: 140px;
-            border-radius: 50%;
-            border: 4px solid var(--accent);
-            box-shadow: 0 0 40px var(--glow);
-            margin-bottom: 20px;
-            animation: float 3s ease-in-out infinite;
-            transition: var(--transition);
-        }
-
-        .profile-img:hover {
-            transform: rotate(360deg) scale(1.2);
+            width: 150px;
+            height: 150px;
+            border-radius: 30px; /* Squircle looks cleaner */
+            border: 2px solid var(--accent);
+            box-shadow: 0 0 50px var(--glow);
+            margin-bottom: 25px;
+            animation: float 4s ease-in-out infinite;
         }
 
         @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-20px); }
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-15px) rotate(2deg); }
         }
 
         h1 { 
-            font-size: 5rem; 
-            font-weight: 800;
-            letter-spacing: -3px; 
-            background: linear-gradient(to right, #fff, var(--accent), var(--secondary));
+            font-size: 4.5rem; 
+            font-weight: 900;
+            letter-spacing: -4px; 
+            background: linear-gradient(90deg, #fff, var(--accent), var(--secondary), #fff);
+            background-size: 300% 100%;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            animation: hueShift 5s infinite linear;
+            animation: textFlow 4s linear infinite;
         }
 
-        @keyframes hueShift {
-            0% { filter: hue-rotate(0deg); }
-            100% { filter: hue-rotate(360deg); }
+        @keyframes textFlow {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 100% 50%; }
         }
 
-        .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 25px; }
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
 
         .card {
             background: var(--card-bg);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 40px;
-            border-radius: 30px;
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 35px;
+            border-radius: 24px;
+            transition: 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
             position: relative;
-            transition: var(--transition);
-            cursor: pointer;
-            overflow: hidden;
         }
 
-        .card:hover {
-            transform: translateY(-10px) scale(1.02) rotate(1deg);
-            background: rgba(255, 255, 255, 0.08);
+        /* Syncing Rotations: Left tilts right, Right tilts left */
+        .card.left:hover {
+            transform: scale(1.03) rotate(2deg);
             border-color: var(--accent);
-            box-shadow: 0 20px 40px rgba(0, 242, 255, 0.2);
+            box-shadow: 10px 10px 40px rgba(0, 242, 255, 0.1);
         }
 
-        .card h3 { font-size: 1.5rem; margin-bottom: 10px; }
+        .card.right:hover {
+            transform: scale(1.03) rotate(-2deg);
+            border-color: var(--secondary);
+            box-shadow: -10px 10px 40px rgba(255, 0, 122, 0.1);
+        }
 
         .pill {
             display: inline-block;
-            background: var(--accent);
+            background: #fff;
             color: #000;
-            padding: 5px 15px;
-            border-radius: 20px;
-            font-size: 0.7rem;
-            font-weight: 800;
-            margin-bottom: 15px;
+            padding: 4px 12px;
+            border-radius: 8px;
+            font-size: 0.65rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            margin-bottom: 12px;
         }
 
         .btn {
             background: #fff;
             color: #000;
             border: none;
-            padding: 15px 30px;
-            border-radius: 50px;
+            padding: 16px 32px;
+            border-radius: 16px;
             font-weight: 800;
             cursor: pointer;
-            transition: var(--transition);
-            margin-top: 20px;
+            transition: 0.3s;
+            margin-top: 15px;
         }
 
         .btn:hover {
-            transform: scale(1.1);
-            box-shadow: 0 0 30px #fff;
-        }
-
-        /* Shake animation for buttons on click */
-        .btn:active { animation: shake 0.2s; }
-
-        @keyframes shake {
-            0% { transform: translateX(0); }
-            25% { transform: translateX(5px); }
-            50% { transform: translateX(-5px); }
-            100% { transform: translateX(0); }
+            transform: scale(1.05) translateY(-3px);
+            box-shadow: 0 15px 30px rgba(255,255,255,0.2);
         }
 
         #click-count {
-            font-size: 6rem;
+            font-size: 7rem;
             font-weight: 900;
-            text-shadow: 0 0 50px var(--accent);
+            line-height: 1;
         }
 
         @media (max-width: 768px) {
             .grid { grid-template-columns: 1fr; }
-            h1 { font-size: 3rem; }
+            h1 { font-size: 3.2rem; }
+            nav { width: 90%; justify-content: space-around; }
+            nav button { padding: 10px 12px; font-size: 0.7rem; }
         }
     </style>
 </head>
 <body>
 
-<nav id="nav">
-    <a data-target="home" class="active">home</a>
-    <a data-target="projects">work</a>
-    <a data-target="addon">updates</a>
-    <a data-target="about">about</a>
-    <a data-target="misc">extra</a>
+<div class="bg-glow"></div>
+
+<nav>
+    <button onclick="showPage('home')" id="btn-home" class="active">home</button>
+    <button onclick="showPage('projects')" id="btn-projects">work</button>
+    <button onclick="showPage('updates')" id="btn-updates">updates</button>
+    <button onclick="showPage('about')" id="btn-about">about</button>
+    <button onclick="showPage('extra')" id="btn-extra">extra</button>
 </nav>
 
 <div class="container">
     
     <section id="home" class="page-section active-page">
         <div class="profile-area">
-            <img src="https://github.com/mourntheloss.png" alt="mourntheloss" class="profile-img">
+            <img src="https://github.com/mourntheloss.png" alt="pfp" class="profile-img">
             <h1>mourntheloss</h1>
-            <p style="color: var(--text-dim); font-size: 1.2rem; margin-top: 10px;">js building stuff havent really decided on what language i like</p>
+            <p style="color: var(--text-dim); font-size: 1.1rem; margin-top: 10px; font-weight: 500;">building high-performance tools</p>
         </div>
 
         <div class="grid">
-            <div class="card">
-                <span class="pill">CURRENTLY</span>
-                <h3>building ADDON</h3>
-                <p style="color: var(--text-dim);">meteor be cool</p>
+            <div class="card left">
+                <span class="pill">active</span>
+                <h3>updating addon</h3>
+                <p style="color: var(--text-dim); margin-top: 8px;">making meteor client actually good. updates daily for now</p>
             </div>
-            <div class="card">
-                <span class="pill">SKILLS</span>
-                <h3>stack</h3>
-                <p style="color: var(--accent); font-weight: bold;">c++ • assembly • java • python</p>
+            <div class="card right">
+                <span class="pill">stack</span>
+                <h3>The Tech</h3>
+                <p style="color: var(--accent); font-weight: 800; margin-top: 8px;">C++ • ASM • JAVA • PYTHON</p>
             </div>
         </div>
     </section>
 
     <section id="projects" class="page-section">
-        <h2 style="font-size: 3rem; margin-bottom: 30px;">my projects</h2>
+        <h2 style="font-size: 3rem; margin-bottom: 25px; letter-spacing: -2px;">featured works</h2>
         <div class="grid">
-            <div class="card" onclick="window.location.href='#'">
-                <span class="pill">JAVA</span>
+            <div class="card left">
+                <span class="pill">java</span>
                 <h3>ADDON</h3>
-                <p style="color: var(--text-dim);">moderately advanced modules that i thought meteor was missing and needed</p>
+                <p style="color: var(--text-dim);">a meteor client addon meant for adding stuff meteor (and other addons) are missing</p>
             </div>
-            <div class="card" onclick="window.location.href='#'">
-                <span class="pill">C++</span>
+            <div class="card right">
+                <span class="pill">c++</span>
                 <h3>RECORDER</h3>
-                <p style="color: var(--text-dim);">lightweight screen capture for windows.</p>
+                <p style="color: var(--text-dim);">lightweight screen recording software made in c++</p>
             </div>
         </div>
     </section>
 
-    <section id="addon" class="page-section">
-        <h2 style="font-size: 3rem; margin-bottom: 30px;">latest notes</h2>
-        <div class="card" style="width: 100%;">
-            <span class="pill">DEV LOG</span>
-            <p style="font-size: 1.2rem; line-height: 2;">
-                CRYSTAL AURA COMING SOON<br>
-                combat modules my main interest rn<br>
-                anchor aura ok-ish-ly stable<br>
-                dropping whenever i want js like carti
+    <section id="updates" class="page-section">
+        <div class="card left" style="width: 100%;">
+            <span class="pill">mans inner thoughts</span>
+            <p style="font-size: 1.4rem; font-weight: 600; line-height: 1.8;">
+                • crystal aura is NOT coming soon that mediocre original module from meteor is 1.3k lines<br>
+                • interested in combat modules now<br>
+                • dropping soon<br>
+                • ima be like carti im never gonna release this
             </p>
         </div>
     </section>
 
     <section id="about" class="page-section">
-        <div class="card" style="text-align: center;">
-            <h2 style="font-size: 3rem; margin-bottom: 20px;">do not talk to me</h2>
-            <p style="color: var(--text-dim); margin-bottom: 20px;">low level stuff for windows</p>
+        <div class="card right" style="text-align: center;">
+            <h2 style="font-size: 3rem; margin-bottom: 10px;">connect</h2>
+            <p style="color: var(--text-dim); margin-bottom: 20px;">low level dev</p>
             <button class="btn" onclick="copyDiscord()">discord</button>
-            <p id="copy-status" style="margin-top: 15px; font-weight: bold; color: var(--accent); height: 20px;"></p>
+            <p id="copy-status" style="margin-top: 15px; color: var(--accent); font-weight: 800;"></p>
         </div>
     </section>
 
-    <section id="misc" class="page-section">
+    <section id="extra" class="page-section">
         <div class="grid">
-            <div class="card">
+            <div class="card left">
                 <span class="pill">thoughts</span>
-                <h3 id="quote-box">"very cool"</h3>
-                <button class="btn" onclick="newQuote()">next this one sucks</button>
+                <h3 id="quote-box" style="height: 60px;">"i think a lot"</h3>
+                <button class="btn" onclick="newQuote()" style="padding: 10px 20px;">Refresh</button>
             </div>
-            <div class="card" style="text-align: center;">
-                <span class="pill">clik</span>
+            <div class="card right" style="text-align: center;">
+                <span class="pill">click me</span>
                 <h1 id="click-count">0</h1>
-                <button class="btn" onclick="incrementClick()">click me</button>
+                <button class="btn" onclick="incrementClick()" style="padding: 10px 20px;">spam</button>
             </div>
         </div>
     </section>
 </div>
 
 <script>
-    const links = document.querySelectorAll('nav a');
-    const sections = document.querySelectorAll('.page-section');
+    function showPage(pageId) {
+        document.querySelectorAll('nav button').forEach(btn => btn.classList.remove('active'));
+        document.getElementById('btn-' + pageId).classList.add('active');
 
-    links.forEach(link => {
-        link.addEventListener('click', () => {
-            const target = link.getAttribute('data-target');
-            
-            links.forEach(l => l.classList.remove('active'));
-            link.classList.add('active');
-
-            sections.forEach(s => {
-                s.classList.remove('active-page');
-                if(s.id === target) s.classList.add('active-page');
-            });
+        const sections = document.querySelectorAll('.page-section');
+        sections.forEach(sec => {
+            sec.classList.remove('active-page');
         });
-    });
+
+        const target = document.getElementById(pageId);
+        target.classList.add('active-page');
+
+        window.scrollTo({top: 0, behavior: 'smooth'});
+    }
 
     function copyDiscord() {
-        navigator.clipboard.writeText("ugrief");
+        navigator.clipboard.writeText("ugf");
         const status = document.getElementById('copy-status');
-        status.innerText = "Copied to clipboard!";
+        status.innerText = "COPIED!";
         setTimeout(() => status.innerText = "", 2000);
     }
 
@@ -335,28 +322,27 @@
         clicks++;
         const count = document.getElementById('click-count');
         count.innerText = clicks;
-        count.style.transform = "scale(1.2)";
-        setTimeout(() => count.style.transform = "scale(1)", 100);
+        count.animate([
+            { transform: 'scale(1.5)', filter: 'brightness(2)' },
+            { transform: 'scale(1)', filter: 'brightness(1)' }
+        ], { duration: 200 });
     }
 
     const quotes = [
-        "blueberry.", 
-        "all my homies hate duke", 
-        "donlo is my favorite donlo.", 
-        "metal is cool until u use it", 
-        "people who say "99 bugs on the wall" annoy me why are u like that shush lil homie"
+        "real ones still hate java", 
+        "real homies hate duke.", 
+        "donlo is my everything", 
+        "macs are pretty cool", 
+        "ppl who complain abt bugs are so corny",
+        "donlo.",
+        "also try minecraft",
+        "last message",
+        "very rare message"
     ];
 
     function newQuote() {
         const box = document.getElementById('quote-box');
-        box.style.transform = "translateX(50px)";
-        box.style.opacity = 0;
-        
-        setTimeout(() => {
-            box.innerText = `"${quotes[Math.floor(Math.random() * quotes.length)]}"`;
-            box.style.transform = "translateX(0)";
-            box.style.opacity = 1;
-        }, 300);
+        box.innerText = `"${quotes[Math.floor(Math.random() * quotes.length)]}"`;
     }
 </script>
 </body>
